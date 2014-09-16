@@ -1,0 +1,92 @@
+<section data-ng-controller="BoardsController" data-ng-init="createBoard()">
+	<div ng-if="!validToken">
+		<div class="header-container">
+			<div class="container">
+				<h3 ng-if="!key || !token">It looks like you haven't given us some info.</h3>
+				<div class="highlight has-success has-feedback" ng-if="!trelloKey">
+					<p><a ng-href="https://trello.com/1/appKey/generate" target="_blank">Click Here</a> to generate your Application Key</p>
+					<form ng-submit="generateKey(key)">
+						<input type="text" ng-model="key" size="30" placeholder="Key">
+						<input class="btn-primary" type="submit" value="generate">
+					</form>
+				</div>
+				<hr>
+				<div class="highlight has-success has-feedback" ng-if="!trelloToken">
+					<p ng-if="validKey"><a ng-href="https://trello.com/1/authorize?key={{trelloKey}}&name=Trello Burndown&expiration=30days&response_type=token" target="_blank">Click Here</a> to grant access and get a token.</p>
+					<form ng-if="validKey" ng-submit="generateToken(token)">
+						<input type="text" ng-model="token" size="30" placeholder="Token">
+						<input class="btn-primary" type="submit" value="generate">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-if="trelloToken">
+	  <form name="boardForm" class="form-horizontal col-md-6" role="form" data-ng-submit="create(boardForm.$valid)" novalidate>
+	    <div class="form-group" ng-class="{ 'has-error' : submitted && boardForm.title.$invalid }">
+	      <label mean-token="'create-title'" class="col-md-3 control-label">Title</label>
+	      <div class="col-md-9">
+	        <!--<input name="title" type="text" class="form-control" data-ng-model="title" id="title" placeholder="Title" required>-->
+	        <!--<div ng-show="submitted && boardForm.title.$invalid" class="help-block">-->
+	          <!--<p ng-show="boardForm.title.$error.required">Title is required</p>-->
+	        <!--</div>-->
+		      <select ng-change="getMembers(boardId)" ng-model="boardId" ng-options="board.id as board.name for board in makeArray(boardResult)" required></select>
+		      <input ng-if="trelloList" class="btn-primary" type="submit" value="generate">
+		      <div ng-show="submitted && boardForm.boardId.$invalid" class="help-block">
+			      <p ng-show="boardForm.boardId.$error.required">Board is required</p>
+		      </div>
+	      </div>
+	    </div>
+		  <div ng-if="boardId">
+			  <ul class="added-devs">
+				  <li ng-repeat="member in addedDevs">
+					  <img ng-src="https://trello-avatars.s3.amazonaws.com/{{member.avatarHash}}/30.png?key={{trelloKey}}&token={{trelloToken}}" />
+					  <span>{{member.fullName}}</span>
+					  <div class="form-inline">
+						  <div class="form-group">
+							  <label class="sr-only" for="{{$index}}-tinyinput">Tiny</label>
+							  <input ng-model="member.size.tiny" class="form-control" type="text" placeholder="Tiny" id="{{$index}}-tinyinput" size="5"/>
+							</div>
+						  <div class="form-group">
+						    <label class="sr-only" for="{{$index}}-smallinput">Small</label>
+						    <input ng-model="member.size.small"  class="form-control" type="text" id="{{$index}}-smallinput" placeholder="Small" size="5"/>
+							</div>
+						  <div class="form-group">
+						    <label class="sr-only" for="{{$index}}-mediuminput">Medium</label>
+						    <input ng-model="member.size.medium"  class="form-control" type="text" id="{{$index}}-mediuminput" placeholder="Medium" size="5"/>
+							</div>
+						  <div class="form-group">
+						    <label class="sr-only" for="{{$index}}-biginput">Big</label>
+						    <input ng-model="member.size.big"  class="form-control" type="text" id="{{$index}}-biginput" placeholder="Big" size="5"/>
+							</div>
+						  <div class="form-group">
+						    <label class="sr-only" for="{{$index}}-hugeinput">Huge</label>
+						    <input ng-model="member.size.huge"  class="form-control" type="text" id="{{$index}}-hugeinput" placeholder="Huge" size="5"/>
+							</div>
+						  <a class="btn" data-ng-click="removeNewDev(member);">
+							  <i class="glyphicon glyphicon-trash"></i>
+						  </a>
+					  </div>
+				  </li>
+			  </ul>
+			  <input type="text" ng-model="addDev" typeahead="member as member.fullName for member in boardMembers | filter:{fullName:$viewValue} | limitTo:8" class="form-control">
+			  <a ng-click="addNewDev(addDev)" class="btn-secondary">Add Developer</a>
+		  </div>
+	    <!--<div class="form-group" ng-class="{ 'has-error' : submitted && boardForm.content.$invalid }">-->
+	      <!--<label mean-token="'create-content'" for="content" class="col-md-3 control-label">Content</label>-->
+	      <!--<div class="col-md-9">-->
+	        <!--<textarea name="content" data-ng-model="content" id="content" cols="30" rows="10" placeholder="Content" class="form-control" required></textarea>-->
+	        <!--<div ng-show="submitted && boardForm.content.$invalid" class="help-block">-->
+	          <!--<p ng-show="boardForm.content.$error.required">Content is required</p>-->
+	        <!--</div>-->
+	      <!--</div>-->
+	    <!--</div>-->
+
+	    <div class="form-group">
+	      <div class="col-md-offset-3 col-md-9">
+	        <button type="submit" class="btn btn-info">Submit</button>
+	      </div>
+	    </div>
+	  </form>
+	</div>
+</section>

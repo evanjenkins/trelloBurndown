@@ -1,0 +1,21 @@
+<section data-ng-controller="BoardsController" data-ng-init="find()">
+  <ul class="articles unstyled">
+    <li data-ng-repeat="board in boardResult">
+      <span>{{board.created | date:'medium'}}</span> /
+      <span>{{board.user.name}}</span>
+      <h2>
+        <a data-ng-href="#!/boards/{{board._id}}">{{board.name}}</a>
+        <span data-ng-if="hasAuthorization(board)">
+          <a class="btn" href="/#!/boards/{{board._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(board);">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>
+      </h2>
+      <div>{{board.content}}</div>
+    </li>
+  </ul>
+  <h1 data-ng-hide="!boardResult || boardResult.length">No boards yet. <br> Why don't you <a href="/#!/boards/create">Create One</a>?</h1>
+</section>

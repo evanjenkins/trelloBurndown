@@ -1,0 +1,14 @@
+<section data-ng-controller="BoardsController" data-ng-init="findOne()">
+  <span>{{board.created | date:'medium'}}</span> /
+  <span>{{board.user.name}}</span>
+  <h2>{{board.name}}</h2>
+  <div data-ng-if="hasAuthorization(board)">
+    <a class="btn" href="/#!/boards/{{board._id}}/edit">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn" data-ng-click="remove(board);">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <div>{{board.content}}</div>
+</section>

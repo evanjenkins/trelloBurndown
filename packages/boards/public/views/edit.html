@@ -1,0 +1,32 @@
+<section data-ng-controller="BoardsController" data-ng-init="findOne()">
+  <form name="boardForm" class="form-horizontal col-md-6" role="form" data-ng-submit="update(boardForm.$valid)" novalidate>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && boardForm.title.$invalid }">
+      <label mean-token="'edit-title'" for="title" class="col-md-2 control-label">Title</label>
+      <div class="col-md-10">
+        <input name="title" type="text" class="form-control" data-ng-model="board.name" id="title" placeholder="Title" required>
+        <div ng-show="submitted && boardForm.title.$invalid" class="help-block">
+          <p ng-show="boardForm.title.$error.required">Title is required</p>
+        </div>
+      </div>
+
+	    <h4>Developers</h4>
+	    <ul class="added-devs">
+		    <li ng-repeat="dev in addedDevs">
+			    <img ng-src="https://trello-avatars.s3.amazonaws.com/{{dev.avatarHash}}/30.png?key={{trelloKey}}&token={{trelloToken}}" />
+			    <span>{{dev.fullName}}</span>
+			    <a class="btn" data-ng-click="removeDev(dev);">
+				    <i class="glyphicon glyphicon-trash"></i>
+			    </a>
+		    </li>
+	    </ul>
+	    <input type="text" ng-model="addDev" typeahead="member as member.fullName for member in boardMembers | filter:{fullName:$viewValue} | limitTo:8" class="form-control">
+	    <a ng-click="addNewDev(addDev)" class="btn-secondary">Add Developer</a>
+
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <button mean-token="'edit-submit'" type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+</section>

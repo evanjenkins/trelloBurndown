@@ -1,0 +1,18 @@
+<section data-ng-controller="DevelopersController" data-ng-init="find()">
+  <ul class="developers unstyled">
+    <li data-ng-repeat="dev in devs">
+      <h2>
+        <a data-ng-href="#!/developers/{{dev._id}}">{{dev.name}}</a>
+        <span data-ng-if="hasAuthorization(dev)">
+          <a class="btn" href="/#!/developers/{{dev._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(dev)">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>
+      </h2>
+    </li>
+  </ul>
+  <h1 data-ng-hide="!devs || devs.length">No developers yet.</h1>
+</section>

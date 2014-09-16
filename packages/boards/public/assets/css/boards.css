@@ -1,0 +1,21 @@
+h1 {
+	text-align: center
+}
+ul.articles li:not(:last-child) {
+	border-bottom: 1px solid #ccc
+}
+.form-horizontal .form-inline .form-group {
+    margin:0;
+}
+.form-horizontal .form-inline .form-group .form-control{
+    width:auto;
+}
+
+.added-devs {
+    margin:0;
+    padding:0;
+    list-style: none;
+}
+.added-devs li {
+    margin: 15px 0;
+}

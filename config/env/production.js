@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  db: 'mongo kahana.mongohq.com:10082/trello_burndown -u <user> -p<password>',
+  db: 'mongodb://admin:!!admin!!@kahana.mongohq.com:10082/trello_burndown',
   /**
    * Database options that will be passed directly to mongoose.connect
    * Below are some examples.

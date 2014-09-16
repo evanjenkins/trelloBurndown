@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "angular-cookies": "latest",
-    "angular-ui": "latest"
+    "ui.bootstrap": "latest"
   },
   "license": "MIT"
 }

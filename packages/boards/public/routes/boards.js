@@ -23,6 +23,26 @@ angular.module('mean.boards').config(['$stateProvider',
       return deferred.promise;
     };
 
+    // Check if the user is connected
+    var checkAdmin = function($q, $timeout, $http, $location) {
+      // Initialize a new promise
+      var deferred = $q.defer();
+
+      // Make an AJAX call to check if the user is logged in
+      $http.get('/loggedin').success(function(user) {
+        // Authenticated
+        if (user !== '0' && user.roles.indexOf('admin') != -1) $timeout(deferred.resolve);
+
+        // Not Authenticated
+        else {
+          $timeout(deferred.reject);
+          $location.url('/login');
+        }
+      });
+
+      return deferred.promise;
+    };
+
     // states for my app
     $stateProvider
       .state('all boards', {
@@ -36,14 +56,14 @@ angular.module('mean.boards').config(['$stateProvider',
         url: '/boards/create',
         templateUrl: 'boards/views/create.html',
         resolve: {
-          loggedin: checkLoggedin
+          loggedin: checkAdmin
         }
       })
       .state('edit board', {
         url: '/boards/:boardId/edit',
         templateUrl: 'boards/views/edit.html',
         resolve: {
-          loggedin: checkLoggedin
+          loggedin: checkAdmin
         }
       })
       .state('board by id', {

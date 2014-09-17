@@ -10,6 +10,8 @@
     "node": "0.10.x",
     "npm": "1.4.x"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ng-clip": "latest"
+  },
   "license": "MIT"
 }

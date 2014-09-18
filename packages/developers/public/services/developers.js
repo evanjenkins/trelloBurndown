@@ -13,25 +13,28 @@ angular.module('mean.developers').factory('DevResource', ['$resource',
         params: {
           developerId: '@_id'
         }
+      },
+      find: {
+        method: 'GET'
       }
     });
   }
 ]);
 
-angular.module('mean.developers').factory('DevFinder', ['$resource',
-  function($resource) {
-    return $resource('developers/find', {
-    }, {
-      find: {
-        method: 'GET'
-      },
-      update: {
-        method: 'PUT',
-        userId: '@userId'
-      }
-    });
-  }
-]);
+//angular.module('mean.developers').factory('DevFinder', ['$resource',
+//  function($resource) {
+//    return $resource('developers/find', {
+//    }, {
+//      find: {
+//        method: 'GET'
+//      },
+//      update: {
+//        method: 'PUT',
+//        userId: '@userId'
+//      }
+//    });
+//  }
+//]);
 
 //Articles service used for articles REST endpoint
 angular.module('mean.developers').factory('Devs', function($resource, $q, $http) {

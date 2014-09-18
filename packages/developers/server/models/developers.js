@@ -27,9 +27,6 @@ var DeveloperSchema = new Schema({
     type: String,
     required: true
   },
-  sizes: {
-    type: Object
-  },
   fullObject: {
     type: Object
   },

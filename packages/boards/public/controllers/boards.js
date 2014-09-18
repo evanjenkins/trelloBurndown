@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateParams', '$location', 'Global', 'BoardResource', 'Boards', 'sharedProperties', '$cookies', 'DevResource', 'DevFinder',
-  function($scope, $stateParams, $location, Global, BoardResource, Boards, sharedProperties, $cookies, DevResource, DevFinder) {
+angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateParams', '$location', 'Global', 'BoardResource', 'Boards', 'sharedProperties', '$cookies', 'DevResource',
+  function($scope, $stateParams, $location, Global, BoardResource, Boards, sharedProperties, $cookies, DevResource) {
     $scope.global = Global;
     $scope.validKey = false;
     $scope.validToken = false;
@@ -42,8 +42,8 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
             developer.$save(function(response) {});
           }
           else {
-            var developer = new DevResource(dev);
-            developer.$update(function(response) {
+            console.log(dev);
+            dev.$update(function(response) {
               console.log(response);
             });
           }
@@ -165,7 +165,7 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
       var members = $scope.boardResult[boardId].memberships;
       $scope.boardMembers = [];
       angular.forEach(members, function(member, key) {
-        DevFinder.find({ 'userId': member.idMember}, function(response) {
+        DevResource.find({ 'userId': member.idMember}, function(response) {
           if (!response.status && response.userId) {
             response.new = false;
             $scope.boardMembers.push(response);

@@ -42,8 +42,6 @@ exports.create = function(req, res) {
  * Find a Developer
  */
 exports.find = function(req, res, next) {
-  //var developer = req.devLoad;
-  //developer = _.extend(developer, req.query.userId);
   Developer.loadByUserId(req.query.userId, function(err, developer) {
     if (err) return res.json({'error': true});
     if (!developer) return res.json({'status': false});
@@ -59,8 +57,7 @@ exports.find = function(req, res, next) {
 exports.update = function(req, res) {
   var developer = req.developer;
 
-  developer = _.extend(developer, req.developerId);
-
+  developer = _.extend(developer, req.body);
   developer.save(function(err) {
     if (err) {
       return res.json(500, {
@@ -100,13 +97,24 @@ exports.show = function(req, res) {
  * List of Developers
  */
 exports.all = function(req, res) {
-  Developer.find().sort('-created').populate('user', 'name username').exec(function(err, developers) {
-    if (err) {
-      return res.json(500, {
-        error: 'Cannot list the developers'
-      });
-    }
-    res.json(developers);
+  if (req.query.userId) {
+    Developer.loadByUserId(req.query.userId, function(err, developer) {
+      if (err) return res.json({'error': true});
+      if (!developer) return res.json({'status': false});
+      req.status = true;
+      req.developer = developer;
+      res.json(developer);
+    });
+  }
+  else {
+    Developer.find().sort('-created').populate('user', 'name username').exec(function(err, developers) {
+      if (err) {
+        return res.json(500, {
+          error: 'Cannot list the developers'
+        });
+      }
+      res.json(developers);
 
-  });
+    });
+  }
 };

@@ -14,7 +14,8 @@ module.exports = function(Developers, app, auth) {
 
   app.route('/developers')
     .get(developers.all)
-    .post(auth.requiresLogin, developers.create);
+    .post(auth.requiresLogin, developers.create)
+    .put(auth.requiresLogin, hasAuthorization, developers.update);
   app.route('/developers/find')
     .get(developers.find)
     .put(auth.requiresLogin, hasAuthorization, developers.update);

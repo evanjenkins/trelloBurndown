@@ -47,7 +47,7 @@ angular.module('mean.developers').controller('DevelopersController', ['$scope', 
         dev.$remove(dev.developerId);
 
         for (var i in $scope.devs) {
-          if ($scope.devs[i].username === dev.username) {
+          if ($scope.devs[i].developerId === dev.developerId) {
             $scope.devs.splice(i, 1);
           }
         }

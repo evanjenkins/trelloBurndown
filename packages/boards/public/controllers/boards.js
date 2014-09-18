@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateParams', '$location', 'Global', 'BoardResource', 'Boards', 'sharedProperties', '$cookies', 'DevResource',
-  function($scope, $stateParams, $location, Global, BoardResource, Boards, sharedProperties, $cookies, DevResource) {
+angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateParams', '$location', 'Global', 'BoardResource', 'Boards', 'sharedProperties', '$cookies', 'DevResource', 'DevFinder',
+  function($scope, $stateParams, $location, Global, BoardResource, Boards, sharedProperties, $cookies, DevResource, DevFinder) {
     $scope.global = Global;
     $scope.validKey = false;
     $scope.validToken = false;
@@ -32,21 +32,26 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
 
         // Save the devs if not already saved.
         angular.forEach($scope.addedDevs, function(dev, key) {
-          var developer = new DevResource({
-            developerId: dev.username,
-            name: dev.fullName,
-            avatarHash: dev.avatarHash,
-            initials: dev.initials,
-            email: dev.email,
-            sizes: dev.size
-          });
-          developer.$save(function(response) {
-          });
+          if (dev.new) {
+            var developer = new DevResource({
+              developerId: dev.fullObject.username,
+              userId: dev.userId,
+              name: dev.name,
+              fullObject: dev.fullObject
+            });
+            developer.$save(function(response) {});
+          }
+          else {
+            var developer = new DevResource(dev);
+            developer.$update(function(response) {
+              console.log(response);
+            });
+          }
         });
 
-        board.$save(function(response) {
-          $location.path('boards/' + response._id);
-        });
+        //board.$save(function(response) {
+        //  $location.path('boards/' + response._id);
+        //});
 
 
         this.title = '';
@@ -160,9 +165,23 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
       var members = $scope.boardResult[boardId].memberships;
       $scope.boardMembers = [];
       angular.forEach(members, function(member, key) {
-        var getMember = Boards.getMember(member.idMember, $scope.trelloKey);
-        getMember.then(function(memberReturn) {
-          $scope.boardMembers.push(memberReturn);
+        DevFinder.find({ 'userId': member.idMember}, function(response) {
+          if (!response.status && response.userId) {
+            response.new = false;
+            $scope.boardMembers.push(response);
+          }
+          else {
+            var getMember = Boards.getMember(member.idMember, $scope.trelloKey);
+            getMember.then(function(memberReturn) {
+              var member = {};
+              member.new = true;
+              member.userId = memberReturn.id;
+              member.name = memberReturn.fullName;
+              member.fullObject = memberReturn;
+              member.fullObject.size = {};
+              $scope.boardMembers.push(member);
+            });
+          }
         });
       });
     };
@@ -175,12 +194,11 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
     $scope.addNewDev = function(addDev) {
       var added = false;
       for (var i = 0; i < $scope.addedDevs.length; i++) {
-        if ($scope.addedDevs[i].id === addDev.id) {
+        if ($scope.addedDevs[i].userId === addDev.userId) {
           added = true;
         }
       }
       if (!added) {
-        addDev.sizes = {};
         $scope.addedDevs.push(addDev);
       }
     };

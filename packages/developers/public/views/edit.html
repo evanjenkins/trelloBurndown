@@ -4,6 +4,7 @@
     <div class="form-group" ng-class="{ 'has-error' : submitted && devForm.title.$invalid }">
       <label mean-token="'edit-title'" for="name" class="col-md-2 control-label">Name</label>
       <div class="col-md-10">
+	      {{dev.userId}}
         <input name="name" type="text" class="form-control" data-ng-model="dev.name" id="name" placeholder="Name" required>
         <div ng-show="submitted && devForm.title.$invalid" class="help-block">
           <p ng-show="devForm.title.$error.required">Name is required</p>
@@ -12,23 +13,23 @@
 	    <div class="form-inline">
 		    <div class="form-group">
 			    <label class="sr-only" for="tinyinput">Tiny</label>
-			    <input class="form-control" type="text" placeholder="Tiny" id="tinyinput" data-ng-model="dev.sizes.tiny" size="5"/>
+			    <input class="form-control" type="text" placeholder="Tiny" id="tinyinput" data-ng-model="dev.fullObject.size.tiny" size="5"/>
 		    </div>
 		    <div class="form-group">
 			    <label class="sr-only" for="smallinput">Small</label>
-			    <input class="form-control" type="text" id="smallinput" placeholder="Small" data-ng-model="dev.sizes.small" size="5"/>
+			    <input class="form-control" type="text" id="smallinput" placeholder="Small" data-ng-model="dev.fullObject.size.small" size="5"/>
 		    </div>
 		    <div class="form-group">
 			    <label class="sr-only" for="mediuminput">Medium</label>
-			    <input class="form-control" type="text" id="mediuminput" placeholder="Medium" data-ng-model="dev.sizes.medium" size="5"/>
+			    <input class="form-control" type="text" id="mediuminput" placeholder="Medium" data-ng-model="dev.fullObject.size.medium" size="5"/>
 		    </div>
 		    <div class="form-group">
 			    <label class="sr-only" for="biginput">Big</label>
-			    <input class="form-control" type="text" id="biginput" placeholder="Big" data-ng-model="dev.sizes.big" size="5"/>
+			    <input class="form-control" type="text" id="biginput" placeholder="Big" data-ng-model="dev.fullObject.size.big" size="5"/>
 		    </div>
 		    <div class="form-group">
 			    <label class="sr-only" for="hugeinput">Huge</label>
-			    <input class="form-control" type="text" id="hugeinput" placeholder="Huge" data-ng-model="dev.sizes.huge" size="5"/>
+			    <input class="form-control" type="text" id="hugeinput" placeholder="Huge" data-ng-model="dev.fullObject.size.huge" size="5"/>
 		    </div>
     </div>
     <div class="form-group">

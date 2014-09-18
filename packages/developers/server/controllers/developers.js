@@ -37,6 +37,22 @@ exports.create = function(req, res) {
   });
 };
 
+
+/**
+ * Find a Developer
+ */
+exports.find = function(req, res, next) {
+  //var developer = req.devLoad;
+  //developer = _.extend(developer, req.query.userId);
+  Developer.loadByUserId(req.query.userId, function(err, developer) {
+    if (err) return res.json({'error': true});
+    if (!developer) return res.json({'status': false});
+    req.status = true;
+    req.developer = developer;
+    res.json(developer);
+  });
+};
+
 /**
  * Update a developer
  */

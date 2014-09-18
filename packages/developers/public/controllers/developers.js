@@ -59,7 +59,7 @@ angular.module('mean.developers').controller('DevelopersController', ['$scope', 
     };
 
     /**
-     * Updates a board.
+     * Updates a developer.
      * @param isValid
      */
     $scope.update = function(isValid) {

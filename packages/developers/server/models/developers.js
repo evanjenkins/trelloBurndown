@@ -23,11 +23,14 @@ var DeveloperSchema = new Schema({
     type: String,
     required: true
   },
-  avatarHash: {
+  userId: {
     type: String,
-    required: false
+    required: true
   },
   sizes: {
+    type: Object
+  },
+  fullObject: {
     type: Object
   },
   user: {
@@ -54,12 +57,21 @@ DeveloperSchema.path('name').validate(function(name) {
   return !!name;
 }, 'Name cannot be blank');
 
+DeveloperSchema.path('userId').validate(function(userId) {
+  return !!userId;
+}, 'Id cannot be blank');
+
 /**
  * Statics
  */
 DeveloperSchema.statics.load = function(id, cb) {
   this.findOne({
     _id: id
+  }).populate('user', 'name username').exec(cb);
+};
+DeveloperSchema.statics.loadByUserId = function(userId, cb) {
+  this.findOne({
+    userId: userId
   }).populate('user', 'name username').exec(cb);
 };
 

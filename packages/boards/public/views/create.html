@@ -41,27 +41,27 @@
 			  <ul class="added-devs">
 				  <li ng-repeat="member in addedDevs">
 					  <img ng-src="https://trello-avatars.s3.amazonaws.com/{{member.avatarHash}}/30.png?key={{trelloKey}}&token={{trelloToken}}" />
-					  <span>{{member.fullName}}</span>
+					  <span>{{member.fullObject.fullName}}</span>
 					  <div class="form-inline">
 						  <div class="form-group">
 							  <label class="sr-only" for="{{$index}}-tinyinput">Tiny</label>
-							  <input ng-model="member.size.tiny" class="form-control" type="text" placeholder="Tiny" id="{{$index}}-tinyinput" size="5"/>
+							  <input ng-model="member.fullObject.size.tiny" class="form-control" type="text" placeholder="Tiny" id="{{$index}}-tinyinput" size="5"/>
 							</div>
 						  <div class="form-group">
 						    <label class="sr-only" for="{{$index}}-smallinput">Small</label>
-						    <input ng-model="member.size.small"  class="form-control" type="text" id="{{$index}}-smallinput" placeholder="Small" size="5"/>
+						    <input ng-model="member.fullObject.size.small"  class="form-control" type="text" id="{{$index}}-smallinput" placeholder="Small" size="5"/>
 							</div>
 						  <div class="form-group">
 						    <label class="sr-only" for="{{$index}}-mediuminput">Medium</label>
-						    <input ng-model="member.size.medium"  class="form-control" type="text" id="{{$index}}-mediuminput" placeholder="Medium" size="5"/>
+						    <input ng-model="member.fullObject.size.medium"  class="form-control" type="text" id="{{$index}}-mediuminput" placeholder="Medium" size="5"/>
 							</div>
 						  <div class="form-group">
 						    <label class="sr-only" for="{{$index}}-biginput">Big</label>
-						    <input ng-model="member.size.big"  class="form-control" type="text" id="{{$index}}-biginput" placeholder="Big" size="5"/>
+						    <input ng-model="member.fullObject.size.big"  class="form-control" type="text" id="{{$index}}-biginput" placeholder="Big" size="5"/>
 							</div>
 						  <div class="form-group">
 						    <label class="sr-only" for="{{$index}}-hugeinput">Huge</label>
-						    <input ng-model="member.size.huge"  class="form-control" type="text" id="{{$index}}-hugeinput" placeholder="Huge" size="5"/>
+						    <input ng-model="member.fullObject.size.huge"  class="form-control" type="text" id="{{$index}}-hugeinput" placeholder="Huge" size="5"/>
 							</div>
 						  <a class="btn" data-ng-click="removeNewDev(member);">
 							  <i class="glyphicon glyphicon-trash"></i>
@@ -69,7 +69,7 @@
 					  </div>
 				  </li>
 			  </ul>
-			  <input type="text" ng-model="addDev" typeahead="member as member.fullName for member in boardMembers | filter:{fullName:$viewValue} | limitTo:8" class="form-control">
+			  <input type="text" ng-model="addDev" typeahead="member as member.name for member in boardMembers | filter:{name:$viewValue} | limitTo:8" class="form-control">
 			  <a ng-click="addNewDev(addDev)" class="btn-secondary">Add Developer</a>
 		  </div>
 	    <!--<div class="form-group" ng-class="{ 'has-error' : submitted && boardForm.content.$invalid }">-->

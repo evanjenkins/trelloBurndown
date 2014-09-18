@@ -31,7 +31,7 @@ angular.module('mean.boards').config(['$stateProvider',
       // Make an AJAX call to check if the user is logged in
       $http.get('/loggedin').success(function(user) {
         // Authenticated
-        if (user !== '0' && user.roles.indexOf('admin') != -1) $timeout(deferred.resolve);
+        if (user !== '0' && user.roles.indexOf('admin') !== -1) $timeout(deferred.resolve);
 
         // Not Authenticated
         else {

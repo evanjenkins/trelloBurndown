@@ -42,16 +42,14 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
             developer.$save(function(response) {});
           }
           else {
-            console.log(dev);
             dev.$update(function(response) {
-              console.log(response);
             });
           }
         });
 
-        //board.$save(function(response) {
-        //  $location.path('boards/' + response._id);
-        //});
+        board.$save(function(response) {
+          $location.path('boards/' + response._id);
+        });
 
 
         this.title = '';

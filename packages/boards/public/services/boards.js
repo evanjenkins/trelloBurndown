@@ -9,7 +9,10 @@ angular.module('mean.articles').factory('BoardResource', ['$resource',
       boardId: '@_id'
     }, {
       update: {
-        method: 'PUT'
+        method: 'PUT',
+        params: {
+          boardId: '@_id'
+        }
       }
     });
   }
@@ -24,6 +27,21 @@ angular.module('mean.boards').factory('Boards', function($resource, $q, $http) {
   api.getBoards = function(key, token) {
     var deferred = $q.defer(),
       url = 'https://trello.com/1/members/my/boards?key=' + key + '&token=' + token;
+
+    $http({method: 'GET', url: url}).
+      success(function (data, status, headers, config) {
+        deferred.resolve(data);
+      }).
+      error(function (data, status, headers, config) {
+        deferred.reject(status);
+      });
+    return deferred.promise;
+  };
+
+  // Api request for a board.
+  api.getLists = function(boardId, key, token) {
+    var deferred = $q.defer(),
+        url = 'https://trello.com/1/boards/' + boardId + '/lists?key=' + key + '&token=' + token;
 
     $http({method: 'GET', url: url}).
       success(function (data, status, headers, config) {

@@ -1,4 +1,4 @@
-<section data-ng-controller="BoardsController" data-ng-init="createBoard()">
+<section data-ng-controller="BoardsController" data-ng-init="createBoard()" ng-style="{'background-color': boardResult[boardId].prefs.background}">
 	<div ng-if="!validToken">
 		<div class="header-container">
 			<div class="container">
@@ -30,7 +30,7 @@
 	        <!--<div ng-show="submitted && boardForm.title.$invalid" class="help-block">-->
 	          <!--<p ng-show="boardForm.title.$error.required">Title is required</p>-->
 	        <!--</div>-->
-		      <select ng-change="getMembers(boardId)" ng-model="boardId" ng-options="board.id as board.name for board in makeArray(boardResult)" required></select>
+		      <select ng-change="getInfo(boardId)" ng-model="boardId" ng-options="board.id as board.name for board in makeArray(boardResult)" required></select>
 		      <input ng-if="trelloList" class="btn-primary" type="submit" value="generate">
 		      <div ng-show="submitted && boardForm.boardId.$invalid" class="help-block">
 			      <p ng-show="boardForm.boardId.$error.required">Board is required</p>
@@ -71,6 +71,20 @@
 			  </ul>
 			  <input type="text" ng-model="addDev" typeahead="member as member.name for member in boardMembers | filter:{name:$viewValue} | limitTo:8" class="form-control">
 			  <a ng-click="addNewDev(addDev)" class="btn-secondary">Add Developer</a>
+		  </div>
+		  <div ng-if="boardId">
+			  <ul>
+				  <li ng-repeat="list in addedLists">
+					  <span>{{list.name}}</span>
+					  <a class="btn" data-ng-click="removeNewList(list);">
+						  <i class="glyphicon glyphicon-trash"></i>
+					  </a>
+				  </li>
+			  </ul>
+			  <label mean-token="'create-lists'" class="col-md-3 control-label">Lists to burn from</label>
+			  <select ng-model="addList" ng-options="board as board.name for board in boardLists" required></select>
+			  <a ng-click="addNewList(addList)" class="btn-secondary">Add List</a>
+			  <!--<a ng-click="addNewDev(addList)" class="btn-secondary">Add Developer</a>-->
 		  </div>
 	    <!--<div class="form-group" ng-class="{ 'has-error' : submitted && boardForm.content.$invalid }">-->
 	      <!--<label mean-token="'create-content'" for="content" class="col-md-3 control-label">Content</label>-->

@@ -26,6 +26,9 @@ var BoardSchema = new Schema({
   devs: {
     type: Array
   },
+  lists: {
+    type: Array
+  },
   memberships: {
     type: Array
   },

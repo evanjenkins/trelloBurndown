@@ -43,7 +43,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   var board = req.board;
 
-  board = _.extend(board, req.boardId);
+  board = _.extend(board, req.body);
 
   board.save(function(err) {
     if (err) {

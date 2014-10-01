@@ -6,6 +6,7 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
     $scope.validKey = false;
     $scope.validToken = false;
     $scope.addedDevs = [];
+    $scope.addedLists = [];
 
     /**
      * Checks if current user is authorized to perform action.
@@ -27,6 +28,7 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
           boardId: this.boardId,
           name: $scope.boardResult[this.boardId].name,
           devs: this.addedDevs,
+          lists: this.addedLists,
           memberships: $scope.boardResult[this.boardId].memberships
         });
 
@@ -65,15 +67,15 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
      */
     $scope.update = function(isValid) {
       if (isValid) {
-        $scope.board.devs = $scope.addedDevs;
+
         var board = $scope.board;
         if (!board.updated) {
           board.updated = [];
         }
         board.updated.push(new Date().getTime());
 
-        board.$update(function() {
-          $location.path('boards/' + board._id);
+        board.$update(function(result) {
+          //$location.path('boards/' + board._id);
         });
       } else {
         $scope.submitted = true;
@@ -132,6 +134,8 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
         $scope.trelloToken = $cookies.trelloToken;
         $scope.addedDevs = board.devs;
         $scope.getMembers(board.boardId);
+        $scope.addedLists = board.lists;
+        $scope.getLists(board.boardId);
       });
     };
 
@@ -185,6 +189,18 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
     };
 
     /**
+     * Gets all a board's lists.
+     * @param {string} boardId
+     *  The board's string id from Trello.
+     */
+    $scope.getLists = function(boardId) {
+      var lists = Boards.getLists(boardId, $scope.trelloKey, $scope.trelloToken);
+      lists.then(function(result) {
+        $scope.boardLists = result;
+      });
+    };
+
+    /**
      * Adds a developer to a board.
      * @param {string} addDev
      *  The string id of the developer from Trello.
@@ -202,6 +218,26 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
     };
 
     /**
+     * Adds a developer to a board.
+     * @param {string} addDev
+     *  The string id of the developer from Trello.
+     */
+    $scope.addNewList = function(addList) {
+      var added = false;
+      for (var i = 0; i < $scope.addedLists.length; i++) {
+        if ($scope.addedLists[i].id === addList.id) {
+          added = true;
+        }
+      }
+      if (!added) {
+        $scope.addedLists.push(addList);
+        if (typeof $scope.board != 'undefined') {
+          console.log($scope.board);
+        }
+      }
+    };
+
+    /**
      * Removes a developer from a board.
      * @param {string} removeDev
      *  The string id of the developer from Trello.
@@ -215,18 +251,49 @@ angular.module('mean.boards').controller('BoardsController', ['$scope', '$stateP
     };
 
     /**
+     * Removes a list from a board.
+     * @param {string} removeList
+     *  The string id of the list from the Trello board.
+     */
+    $scope.removeNewList = function(removeList) {
+      for (var i = 0; i < $scope.addedLists.length; i++) {
+        if ($scope.addedLists[i].id === removeList.id) {
+          $scope.addedLists.splice(i, 1);
+        }
+      }
+    };
+
+    /**
      * Removes a developer from a board.
      * @param {string} removeDev
      *  The string id of the developer from Trello.
      */
     $scope.removeDev = function(removeDev) {
       for (var i = 0; i < $scope.board.devs.length; i++) {
-        if ($scope.board.devs[i].id === removeDev.id) {
+        if ($scope.board.devs[i].userId === removeDev.userId) {
           $scope.board.devs.splice(i, 1);
         }
       }
     };
 
+    /**
+     * Removes a list from a board.
+     * @param {string} removeList
+     *  The string id of the list from Trello.
+     */
+    $scope.removeList = function(removeList) {
+      for (var i = 0; i < $scope.board.lists.length; i++) {
+        if ($scope.board.lists[i].id === removeList.id) {
+          $scope.board.lists.splice(i, 1);
+        }
+      }
+    };
+
+
+    $scope.getInfo = function(boardId) {
+      $scope.getMembers(boardId);
+      $scope.getLists(boardId);
+    };
 
     $scope.createBoard = function() {
       // Check cookies for a trello key.

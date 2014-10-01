@@ -13,15 +13,26 @@
 	    <ul class="added-devs">
 		    <li ng-repeat="dev in addedDevs">
 			    <img ng-src="https://trello-avatars.s3.amazonaws.com/{{dev.avatarHash}}/30.png?key={{trelloKey}}&token={{trelloToken}}" />
-			    <span>{{dev.fullName}}</span>
+			    <span>{{dev.name}}</span>
 			    <a class="btn" data-ng-click="removeDev(dev);">
 				    <i class="glyphicon glyphicon-trash"></i>
 			    </a>
 		    </li>
 	    </ul>
-	    <input type="text" ng-model="addDev" typeahead="member as member.fullName for member in boardMembers | filter:{fullName:$viewValue} | limitTo:8" class="form-control">
+	    <input type="text" ng-model="addDev" typeahead="member as member.name for member in boardMembers | filter:{name:$viewValue} | limitTo:8" class="form-control">
 	    <a ng-click="addNewDev(addDev)" class="btn-secondary">Add Developer</a>
 
+	    <h4>Lists</h4>
+	    <ul class="added-lists">
+		    <li ng-repeat="list in board.lists">
+			    <span>{{list.name}}</span>
+			    <a class="btn" data-ng-click="removeList(list);">
+				    <i class="glyphicon glyphicon-trash"></i>
+			    </a>
+		    </li>
+	    </ul>
+	    <select ng-model="addList" ng-options="board as board.name for board in boardLists"></select>
+	    <a ng-click="addNewList(addList)" class="btn-secondary">Add List</a>
     </div>
     <div class="form-group">
       <div class="col-md-offset-2 col-md-10">
